@@ -1,0 +1,44 @@
+#%RAML 1.0
+title: IndianFlights
+version: "1.0"
+protocols:
+  - HTTP
+  - HTTPS
+
+baseUri: www.{envUrl}-project.com
+
+baseUriParameters:
+  envUrl:
+    enum:
+      - dev
+      - prod
+      - test
+  
+types:
+  IndianFlight: !include /datatypes/IndianFlight.raml
+
+/flights:
+  get: 
+    queryParameters:
+      destination:
+        enum:
+          - MUM
+          - BLR
+          - DEL
+  post:
+    body:
+      application/json:
+        type: IndianFlight
+        example:
+          strict: false
+          value:
+            !include /examples/IndianFlightNoIdExample.raml
+    responses:
+      200:
+        body:
+          application/json:
+            type: IndianFlight[]
+            example:
+              strict: true
+              value: 
+                !include /examples/IndianFlightExample.raml
